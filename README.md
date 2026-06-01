@@ -23,6 +23,7 @@ Backend foundation for an MVP historical knowledge graph application where an AI
 │       ├── agent
 │       ├── drafts
 │       ├── entities
+│       ├── graph
 │       ├── relations
 │       └── sources
 ```
@@ -80,6 +81,8 @@ Draft `rawResponse` is stored as `Json` because early AI output will change ofte
 `PrismaModule` is global to avoid repetitive imports in small MVP modules. This is acceptable here because Prisma is infrastructure, not domain behavior.
 
 OpenAI is hidden behind the `LlmClient` interface. The default binding is `OpenAiLlmClient`, but tests can provide a fake client and future providers can be added without changing `AgentService`.
+
+Graph exploration is implemented as a read-side module. `GraphService` returns a frontend-friendly node/edge view, `TimelineService` returns chronological event data, and the cache layer is hidden behind `CacheService` so Redis can replace the in-memory provider later.
 
 ## AI Agent Flow
 
@@ -141,6 +144,73 @@ Nest's `Logger` records each generation attempt, retry delay, missing API key wa
 
 Logs intentionally avoid storing full prompts or raw model responses to reduce accidental leakage of user input or generated content. Add request correlation IDs before deploying behind an API gateway.
 
+## Graph Exploration
+
+`GET /graph` returns the approved knowledge graph:
+
+```json
+{
+  "nodes": [
+    {
+      "id": "entity-id",
+      "type": "event",
+      "label": "French Revolution"
+    }
+  ],
+  "edges": [
+    {
+      "source": "from-entity-id",
+      "target": "to-entity-id",
+      "relationType": "led_to"
+    }
+  ]
+}
+```
+
+The graph query uses two optimized Prisma queries: one for entity nodes and one for relation edges.
+
+`GET /entities/:id` returns the selected entity, incoming relations, outgoing relations, and connected entities:
+
+```json
+{
+  "entity": {
+    "id": "entity-id",
+    "type": "person",
+    "name": "Napoleon Bonaparte"
+  },
+  "incomingRelations": [],
+  "outgoingRelations": [],
+  "connectedEntities": []
+}
+```
+
+The entity detail query includes both relation directions and their connected entities in one Prisma query, avoiding N+1 traversal.
+
+`GET /timeline` returns dated entities sorted chronologically. By default it returns `event` entities:
+
+```http
+GET /timeline?page=1&limit=20&type=event&dateStart=1789-01-01&dateEnd=1799-12-31
+```
+
+```json
+{
+  "items": [
+    {
+      "id": "entity-id",
+      "type": "event",
+      "label": "Storming of the Bastille",
+      "description": "A major event of the French Revolution.",
+      "dateStart": "1789-07-14T00:00:00.000Z",
+      "dateEnd": null
+    }
+  ],
+  "page": 1,
+  "limit": 20,
+  "total": 1,
+  "totalPages": 1
+}
+```
+
 ## Implementation Order
 
 1. Start Postgres with Docker.
@@ -159,6 +229,9 @@ POST /entities
 GET /entities
 GET /entities/:id
 PATCH /entities/:id
+
+GET /graph
+GET /timeline?page=1&limit=20&type=event
 
 POST /relations
 GET /relations

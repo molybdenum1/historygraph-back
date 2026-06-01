@@ -34,7 +34,7 @@ export class EntitiesController {
 
   @Get(":id")
   findById(@Param("id", ParseUUIDPipe) id: string) {
-    return this.entitiesService.findByIdOrThrow(id);
+    return this.entitiesService.findDetailByIdOrThrow(id);
   }
 
   @Patch(":id")
