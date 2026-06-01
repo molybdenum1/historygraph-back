@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "../../common/validation/zod-validation.pipe";
 import {
   GenerateHistoricalDraftDto,
@@ -16,5 +16,10 @@ export class AgentController {
     data: GenerateHistoricalDraftDto,
   ) {
     return this.agentService.generateHistoricalDraft(data.topic);
+  }
+
+  @Get("agent-ping")
+  pingAgent() {
+    return "Pong";
   }
 }
