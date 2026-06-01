@@ -33,6 +33,7 @@ model Entity {
   outgoingRelations Relation[] @relation("RelationFromEntity")
   incomingRelations Relation[] @relation("RelationToEntity")
 
+  @@unique([name, type])
   @@index([type])
   @@index([name])
 }
@@ -52,12 +53,13 @@ model Relation {
   @@index([fromEntityId])
   @@index([toEntityId])
   @@index([relationType])
+  @@unique([fromEntityId, toEntityId, relationType])
 }
 
 model Source {
   id          String  @id @default(uuid())
   title       String
-  url         String?
+  url         String? @unique
   description String?
 }
 

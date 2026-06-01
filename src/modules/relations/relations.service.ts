@@ -1,10 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Relation } from '@prisma/client';
-import { CreateRelationDto, UpdateRelationDto } from './dto/relation.dto';
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Relation } from "@prisma/client";
+import { CreateRelationDto, UpdateRelationDto } from "./dto/relation.dto";
 import {
   RELATIONS_REPOSITORY,
   RelationsRepository,
-} from './repositories/relations.repository';
+} from "./repositories/relations.repository";
 
 @Injectable()
 export class RelationsService {

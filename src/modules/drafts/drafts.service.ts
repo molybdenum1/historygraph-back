@@ -1,10 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Draft } from '@prisma/client';
-import { CreateDraftDto, DraftStatusDto } from './dto/draft.dto';
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Draft } from "@prisma/client";
+import { CreateDraftDto, DraftStatusDto } from "./dto/draft.dto";
 import {
   DRAFTS_REPOSITORY,
   DraftsRepository,
-} from './repositories/drafts.repository';
+} from "./repositories/drafts.repository";
 
 @Injectable()
 export class DraftsService {

@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const entityTypeSchema = z.enum([
-  'event',
-  'person',
-  'place',
-  'state',
-  'concept',
+  "event",
+  "person",
+  "place",
+  "state",
+  "concept",
 ]);
 
 export const createEntitySchema = z.object({

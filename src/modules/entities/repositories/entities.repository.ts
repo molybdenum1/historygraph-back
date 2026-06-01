@@ -1,11 +1,17 @@
-import { Entity } from '@prisma/client';
-import { CreateEntityDto, UpdateEntityDto } from '../dto/entity.dto';
+import { Entity } from "@prisma/client";
+import { PrismaDbClient } from "../../../infrastructure/prisma/prisma-client.type";
+import { CreateEntityDto, UpdateEntityDto } from "../dto/entity.dto";
 
-export const ENTITIES_REPOSITORY = Symbol('ENTITIES_REPOSITORY');
+export const ENTITIES_REPOSITORY = Symbol("ENTITIES_REPOSITORY");
 
 export interface EntitiesRepository {
-  create(data: CreateEntityDto): Promise<Entity>;
+  create(data: CreateEntityDto, client?: PrismaDbClient): Promise<Entity>;
   findById(id: string): Promise<Entity | null>;
   findMany(): Promise<Entity[]>;
+  findByNameAndType(
+    name: string,
+    type: CreateEntityDto["type"],
+    client?: PrismaDbClient,
+  ): Promise<Entity | null>;
   update(id: string, data: UpdateEntityDto): Promise<Entity>;
 }

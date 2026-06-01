@@ -1,10 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Entity } from '@prisma/client';
-import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Entity } from "@prisma/client";
+import { CreateEntityDto, UpdateEntityDto } from "./dto/entity.dto";
 import {
   ENTITIES_REPOSITORY,
   EntitiesRepository,
-} from './repositories/entities.repository';
+} from "./repositories/entities.repository";
 
 @Injectable()
 export class EntitiesService {

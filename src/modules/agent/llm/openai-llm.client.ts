@@ -84,11 +84,11 @@ export class OpenAiLlmClient implements LlmClient {
     const responseBody = this.getOpenAiErrorBody(error);
     return Boolean(
       error.status === 429 &&
-        (responseBody?.error?.code === "insufficient_quota" ||
-          responseBody?.error?.type === "insufficient_quota" ||
-          responseBody?.error?.message
-            ?.toLowerCase()
-            .includes("exceeded your current quota")),
+      (responseBody?.error?.code === "insufficient_quota" ||
+        responseBody?.error?.type === "insufficient_quota" ||
+        responseBody?.error?.message
+          ?.toLowerCase()
+          .includes("exceeded your current quota")),
     );
   }
 
@@ -96,15 +96,15 @@ export class OpenAiLlmClient implements LlmClient {
     return this.isOpenAiStatusError(error) && error.status === 429;
   }
 
-  private isOpenAiStatusError(
-    error: unknown,
-  ): error is OpenAiStatusError {
+  private isOpenAiStatusError(error: unknown): error is OpenAiStatusError {
     return error instanceof OpenAI.APIError && typeof error.status === "number";
   }
 
   private getOpenAiErrorBody(
     error: OpenAiStatusError,
-  ): { error?: { code?: string; type?: string; message?: string } } | undefined {
+  ):
+    | { error?: { code?: string; type?: string; message?: string } }
+    | undefined {
     return error.error as
       | { error?: { code?: string; type?: string; message?: string } }
       | undefined;

@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { RELATIONS_REPOSITORY } from './repositories/relations.repository';
-import { PrismaRelationsRepository } from './repositories/prisma-relations.repository';
-import { RelationsController } from './relations.controller';
-import { RelationsService } from './relations.service';
+import { Module } from "@nestjs/common";
+import { RELATIONS_REPOSITORY } from "./repositories/relations.repository";
+import { PrismaRelationsRepository } from "./repositories/prisma-relations.repository";
+import { RelationsController } from "./relations.controller";
+import { RelationsService } from "./relations.service";
 
 @Module({
   controllers: [RelationsController],

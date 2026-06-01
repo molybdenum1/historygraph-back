@@ -1,10 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Source } from '@prisma/client';
-import { CreateSourceDto, UpdateSourceDto } from './dto/source.dto';
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Source } from "@prisma/client";
+import { CreateSourceDto, UpdateSourceDto } from "./dto/source.dto";
 import {
   SOURCES_REPOSITORY,
   SourcesRepository,
-} from './repositories/sources.repository';
+} from "./repositories/sources.repository";
 
 @Injectable()
 export class SourcesService {
